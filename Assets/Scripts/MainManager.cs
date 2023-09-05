@@ -12,6 +12,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text bestScoreText;
 
     public GameObject GameOverText;
     
@@ -72,10 +73,15 @@ public class MainManager : MonoBehaviour
         ScoreText.text = $"Score : {m_Points}";
     }
 
+    public void BestScoreName()     //TODO: Change this to BestPlayerNameAndScore()
+    {
+        bestScoreText.text = $"Best Score : {PlayerDataHandler.Instance.playerName} : {m_Points}";
+    }
+
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-        
+        BestScoreName();
     }
 }

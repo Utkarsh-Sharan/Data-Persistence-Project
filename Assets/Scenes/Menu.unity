@@ -614,7 +614,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  score: 0
 --- !u!1 &855972455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,6 +1185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bb7c44da8da0d345821f698c13ed647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerName: {fileID: 350527206}
 --- !u!1 &1137639411
 GameObject:
   m_ObjectHideFlags: 0
