@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public Text bestScoreText;
+    //public string currentPlayerName;
 
     public GameObject GameOverText;
     
@@ -23,6 +25,12 @@ public class MainManager : MonoBehaviour
 
     private static int _bestScore;
     private static string _bestPlayerName;
+
+
+    private void Awake()
+    {
+        LoadNameNScoreInMain();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +49,9 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        //currentPlayerName = PlayerDataHandler.Instance.playerName;
+        SetBestPlayer();
     }
 
     private void Update()
@@ -70,18 +81,70 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
+        PlayerDataHandler.Instance.score = m_Points;
         ScoreText.text = $"Score : {m_Points}";
     }
 
-    public void BestScoreName()     //TODO: Change this to BestPlayerNameAndScore()
+    void SetBestPlayer()
     {
-        bestScoreText.text = $"Best Score : {PlayerDataHandler.Instance.playerName} : {m_Points}";
+        if(_bestPlayerName == null && _bestScore == 0)
+        {
+            bestScoreText.text = $"Best Score : {_bestPlayerName} : {_bestScore}";
+        }
+        else
+        {
+            bestScoreText.text = $"Best Score : {_bestPlayerName} : {_bestScore}";
+        }
     }
-
+   
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-        BestScoreName();
+        CheckBestPlayerNameAndScore();
+    }
+
+    void CheckBestPlayerNameAndScore()
+    {
+        int presentScore = PlayerDataHandler.Instance.score;
+        if (presentScore > _bestScore)
+        {
+            _bestScore = presentScore;
+            _bestPlayerName = PlayerDataHandler.Instance.playerName;
+
+            bestScoreText.text = $"Best Score : {_bestPlayerName} : {_bestScore}";
+            SaveNameNScoreInMain(_bestScore, _bestPlayerName);
+        }
+    }
+
+    [System.Serializable]
+    public class SaveDataInMain
+    {
+        public string bestPlayerName;
+        public int bestPlayerScore;
+    }
+
+    public void SaveNameNScoreInMain(int bestScore, string bestPlayer)
+    {
+        SaveDataInMain data = new SaveDataInMain();
+        data.bestPlayerName = bestPlayer;
+        data.bestPlayerScore = bestScore;
+
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    public void LoadNameNScoreInMain()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if(File.Exists(path))
+        {
+            Debug.Log("found");
+            string json = File.ReadAllText(path);
+            SaveDataInMain data = JsonUtility.FromJson<SaveDataInMain>(json);
+
+            _bestPlayerName = data.bestPlayerName;
+            _bestScore = data.bestPlayerScore;
+        }
     }
 }

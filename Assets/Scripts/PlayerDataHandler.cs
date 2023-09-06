@@ -7,7 +7,7 @@ public class PlayerDataHandler : MonoBehaviour
 {
     public static PlayerDataHandler Instance;
     public string playerName;
-    //TODO: Add public int score;
+    public int score;
 
     private void Awake()
     {
