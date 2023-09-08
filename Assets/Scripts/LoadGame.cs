@@ -7,41 +7,16 @@ using TMPro;
 
 public class LoadGame : MonoBehaviour
 {
+    public static LoadGame Instance;
     public TextMeshProUGUI bestPlayerText;
 
-    private static string _bestPlayer;
-    private static int _bestScore;
+    public string _bestPlayer;
+    public int _bestScore;  
 
-    private void Awake()
+    public void SetBestPlayer()
     {
-        LoadNameNScore();
-    }
-
-    [System.Serializable]
-    public class SaveData
-    {
-        public string playerName;
-        public int score;
-    }
-
-    public void LoadNameNScore()
-    {
-        string path = Application.persistentDataPath + "/savefile.json";
-        if (File.Exists(path))
-        {
-            Debug.Log("found");
-            string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
-
-            _bestPlayer = data.playerName;
-            _bestScore = data.score;
-
-            SetBestPlayer();
-        }
-    }
-
-    void SetBestPlayer()
-    {
+        _bestPlayer = PlayerDataHandler.Instance.bestPlayer;
+        _bestScore = PlayerDataHandler.Instance.bestScore;
         bestPlayerText.text = $"Best Score : {_bestPlayer} : {_bestScore}";
     }
 }

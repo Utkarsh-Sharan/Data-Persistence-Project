@@ -9,6 +9,9 @@ public class PlayerDataHandler : MonoBehaviour
     public string playerName;
     public int score;
 
+    public string bestPlayer;
+    public int bestScore;
+
     private void Awake()
     {
         if(Instance != null)

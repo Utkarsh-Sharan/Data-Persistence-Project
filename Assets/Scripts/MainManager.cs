@@ -109,6 +109,10 @@ public class MainManager : MonoBehaviour
 
             bestScoreText.text = $"Best Score : {_bestPlayerName} : {_bestScore}";
             SaveNameNScore(_bestScore, _bestPlayerName);
+
+            PlayerDataHandler.Instance.bestScore = _bestScore;
+            PlayerDataHandler.Instance.bestPlayer = _bestPlayerName;           
+            //LoadGame.Instance.SetBestPlayer();
         }
     }
 
