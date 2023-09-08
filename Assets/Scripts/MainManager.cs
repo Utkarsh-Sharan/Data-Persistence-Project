@@ -8,8 +8,6 @@ using System.IO;
 
 public class MainManager : MonoBehaviour
 {
-    public static MainManager Instance;
-
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
@@ -84,7 +82,7 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         PlayerDataHandler.Instance.score = m_Points;
-        ScoreText.text = $"Score : {currentPlayerName} : {m_Points}";
+        ScoreText.text = $"Now Playing : {currentPlayerName} : {m_Points}";
     }
 
     void SetBestPlayer()
@@ -110,9 +108,7 @@ public class MainManager : MonoBehaviour
             bestScoreText.text = $"Best Score : {_bestPlayerName} : {_bestScore}";
             SaveNameNScore(_bestScore, _bestPlayerName);
 
-            PlayerDataHandler.Instance.bestScore = _bestScore;
-            PlayerDataHandler.Instance.bestPlayer = _bestPlayerName;           
-            //LoadGame.Instance.SetBestPlayer();
+            PlayerDataHandler.Instance.SaveNameNScore(_bestScore, _bestPlayerName);
         }
     }
 
