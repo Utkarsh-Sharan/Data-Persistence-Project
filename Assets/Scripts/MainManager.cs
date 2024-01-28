@@ -23,13 +23,13 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    private static int _bestScore;
-    private static string _bestPlayerName;
+    private int _bestScore;
+    private string _bestPlayerName;
 
 
     private void Awake()
     {
-        LoadNameNScore();
+        PlayerDataHandler.Instance.LoadNameNScore();
     }
 
     // Start is called before the first frame update
@@ -87,7 +87,7 @@ public class MainManager : MonoBehaviour
 
     void SetBestPlayer()
     {
-        bestScoreText.text = $"Best Score : {_bestPlayerName} : {_bestScore}";       
+        bestScoreText.text = $"Best Score : {PlayerDataHandler.Instance._bestPlayer} : {PlayerDataHandler.Instance._bestScore}";       
     }
    
     public void GameOver()
@@ -100,46 +100,13 @@ public class MainManager : MonoBehaviour
     void CheckBestPlayerNameAndScore()
     {
         int presentScore = PlayerDataHandler.Instance.score;
-        if (presentScore > _bestScore)
+        if (presentScore > PlayerDataHandler.Instance._bestScore)
         {
             _bestScore = presentScore;
             _bestPlayerName = PlayerDataHandler.Instance.playerName;
 
-            bestScoreText.text = $"Best Score : {_bestPlayerName} : {_bestScore}";
-            SaveNameNScore(_bestScore, _bestPlayerName);
-
             PlayerDataHandler.Instance.SaveNameNScore(_bestScore, _bestPlayerName);
-        }
-    }
-
-    [System.Serializable]
-    public class SaveData
-    {
-        public string bestPlayerName;
-        public int bestPlayerScore;
-    }
-
-    public void SaveNameNScore(int bestScore, string bestPlayer)
-    {
-        SaveData data = new SaveData();
-        data.bestPlayerName = bestPlayer;
-        data.bestPlayerScore = bestScore;
-
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
-    }
-
-    public void LoadNameNScore()
-    {
-        string path = Application.persistentDataPath + "/savefile.json";
-        if(File.Exists(path))
-        {
-            Debug.Log("found");
-            string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
-
-            _bestPlayerName = data.bestPlayerName;
-            _bestScore = data.bestPlayerScore;
+            bestScoreText.text = $"Best Score : {PlayerDataHandler.Instance._bestPlayer} : {PlayerDataHandler.Instance._bestScore}";           
         }
     }
 }
