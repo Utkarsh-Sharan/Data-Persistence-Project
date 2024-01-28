@@ -39,15 +39,15 @@ public class PlayerDataHandler : MonoBehaviour
         data.bestPlayerScore = bestScore;
 
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.persistentDataPath + "/savefile1.json", json);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
     }
 
     public void LoadNameNScore()
     {
-        string path = Application.persistentDataPath + "/savefile1.json";
+        string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
         {
-            Debug.Log("found");
+            //Debug.Log(path);
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
